@@ -1,0 +1,79 @@
+{% extends "notes/layout.html" %}
+
+{% block title %}
+Account
+{% endblock title %}
+
+
+{% block main %}
+
+<!-- Messagebox -->
+{% if message %}
+<div class="msg-container-account">
+    <p class="msg msg-error">{{message}}</p>
+</div>
+{% endif %}
+
+<!-- Content -->
+<div class="container-primary">
+    <!-- About -->
+    <div class="titlebar-primary">
+        <p class="titlebar-title">Account</p>
+        <p class="titlebar-text">Logged as: {{request.user}}</p>
+        
+    </div>
+    
+    <div class="content-box-primary custom-scrollbar">
+        <div class="account-container">
+            <!-- Change username field -->
+            <div class="field-container">
+                <label class="field-label">Change username</label>
+                <div class="form-control-container">
+                    <form action="{% url 'change_username' %}" method="post">
+                        {% csrf_token %}
+                        <div class="input-field">
+                            <input type="text" name="username" class="field-control" placeholder="Username..." required autocomplete="off">
+                            <input type="submit" value="Change" class="field-button btn-primary">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Change Password field -->
+            <div class="field-container">
+                <label class="field-label">Change password</label>
+                <div class="form-control-container">
+                    <form action="{% url 'change_password' %}" method="post">
+                        {% csrf_token %}
+                        <!-- Old password -->
+                        <div class="input-field">
+                            <input type="password" name="old_password" class="field-control" placeholder="Old password...">
+                        </div>
+                        <hr class="divider">
+                        <!-- New password -->
+                        <div class="input-field">
+                            <input type="password" name="new_password" class="field-control" placeholder="New password..." required autocomplete="off">
+                            <input type="password" name="confirm_password" class="field-control" placeholder="Confirm password..." required autocomplete="off">
+                            <input type="submit" value="Change" class="field-button btn-primary">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Delete account field -->
+            <div class="field-container">
+                <label class="field-label danger">Delete account</label>
+                <div class="form-control-container">
+                    <p class="field-text">This will also delete all your notes. This action is irreversible.</p>
+                    <form action="{% url 'delete_account' %}" method="post">
+                        {% csrf_token %}
+                        <div class="input-field">
+                            <input type="password" name="password" class="field-control input-danger-focus" placeholder="Password..." required autocomplete="off">
+                            <input type="submit" value="Delete" class="field-button btn-primary btn-danger-hover">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

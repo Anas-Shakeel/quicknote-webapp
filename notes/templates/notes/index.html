@@ -1,0 +1,79 @@
+{% extends "notes/layout.html" %}
+
+{% block title %}
+Home
+{% endblock title %}
+
+
+{% block main %}
+
+
+{% if request.user.is_authenticated %}
+    <!-- If user logged in... -->
+    <div class="container-primary">
+        <form action="{% url 'search' %}" method="get" class="titlebar-primary no-pad">
+                <!-- Search bar -->
+                <input type="search" name="filter" class="field-control search-bar" placeholder="Search notes by title..." {% if filter_word %}value="{{filter_word}}"{% endif %} required autofocus autocomplete="off">
+                <input type="submit" value="Search" class="field-button btn-primary search-btn">
+        </form>
+        
+        <div class="content-box-primary no-pad">
+            <!-- All notes from user -->
+            <div class="notes-container  custom-scrollbar">
+                {% for note in notes %}
+                    <div class="note" {% if note.color.code %} style='background-color: #{{note.color.code}};' {% endif %}>
+                        <div class="note-title-container">
+                            <p class="note-title">{{note.title|truncatechars:25}}</p>
+                        </div>
+                        <div class="note-desc-box no-borders-x">
+                            {% if note.description %}
+                                <p class="note-desc">{{note.description|truncatechars:100}}</p>
+                            {% else %}
+                                <p class="note-desc">No Description.</p>
+                            {% endif %}
+                        </div>
+                        <!-- Buttons -->
+                        <div class="note-btn-container">
+                            <a href="{% url 'note' note.pk %}" class="note-btn">Open</a>
+                            <a href="{% url 'duplicate' note.pk %}" class="note-btn">Duplicate</a>
+                            <a href="{% url 'delete' note.pk %}" class="note-btn danger-hover">Delete</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="heading">No Notes.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+{% else %}
+        <!-- If user not logged in!!!! -->
+    <div class="container">
+        <h1 class="app-name">Quicknote</h1>
+        <p class="tagline">One place for all your notes.</p>
+        <table class="feature-table">
+            <tbody>
+                <tr>
+                    <td>Friendly UI</td>
+                    <td>Easy to Use</td>
+                </tr>
+                <tr>
+                    <td>Quick Signup</td>
+                    <td>No Nonsense</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Buttons login/signup -->
+        <div class="button-container">
+            <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+            <a href="{% url 'signup' %}" class="btn btn-primary">Signup</a>
+        </div>
+    </div>
+{% endif %}
+
+{% endblock main %}
+
+
+
+DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD

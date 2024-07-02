@@ -1,0 +1,77 @@
+{% extends "notes/layout.html" %} {% load static %}
+
+<!-- Title of the page -->
+{% block title %} Add a new note {% endblock title %}
+
+<!-- Main content -->
+{% block main %}
+
+<!-- Messagebox -->
+{% if message %}
+<div class="msg-container-account">
+    <p class="msg msg-error">{{message}}</p>
+</div>
+{% endif %}
+
+
+<!-- Content -->
+<form action="{% url 'add' %}" method="post" class="container-primary">
+    {% csrf_token %}
+
+    <!-- Titlebar -->
+    <div class="titlebar-primary no-pad-x no-pad-y">
+        <input
+            type="text"
+            name="title"
+            class="field-control no-borders pad-x-20 custom-select"
+            placeholder="Write Title..."
+            autocomplete="off"
+            maxlength="100"
+            required
+            autofocus />
+        <!-- Buttons -->
+        <div class="note-btn-container pad-right-20">
+            <div class="color-selector-container">
+                <label for="color" class="color-selector-label">Color</label>
+                <select name="color" class="color-selector">
+                    {% for color in colors %}
+                        <option value="{{ color.code }}" class="color-selector-option">{{color.name.title}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <input type="submit" value="Add" class="titlebar-btn d-color-def" />
+            <a href="{% url 'index' %}" class="titlebar-btn f-color-def danger-hover">Cancel</a>
+        </div>
+    </div>
+
+    <!-- Description -->
+    <div class="titlebar-primary no-pad-x">
+        <input
+            type="text"
+            name="desc"
+            class="field-control no-borders f-20 pad-x-20 custom-select"
+            placeholder="Write Description... (Optional)"
+            autocomplete="off"
+            maxlength="100" />
+    </div>
+
+    <!-- Contentbox -->
+    <div class="content-box-primary no-pad-x custom-scrollbar">
+        <textarea
+            name="content"
+            placeholder="Write Content..."
+            class="content-textarea pad-x-20 custom-select custom-scrollbar"
+            required></textarea>
+    </div>
+</form>
+
+<script>
+    function file_drop(event) {
+        // open(e.target.value)
+        const file = document.querySelector("#fileDrop").value
+        console.log(file)
+    }
+</script>
+
+{% endblock main %}

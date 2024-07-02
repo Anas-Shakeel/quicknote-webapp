@@ -1,0 +1,37 @@
+{% extends "notes/layout.html" %}
+
+{% block title %}
+Signup
+{% endblock title %}
+
+{% block main %}
+
+<!-- Signup Form -->
+<div class="container-primary signup-box">
+    <!-- Messagebox -->
+    <div class="msg-container">
+        {% if message %}
+            <p class="msg msg-error">{{message}}</p>
+        {% endif %}
+    </div>
+    <!-- Signup form -->
+    <div class="login-box-container">
+        <!-- Form Heading -->
+        <h1 class="login-heading">Signup</h1>
+        
+        <!-- Form Fields -->  
+        <form action="{% url 'signup' %}" method="post">
+            {% csrf_token %}
+            <div class="login-input-field-container">
+                <input type="text" name="username" class="login-field-control" placeholder="Username..." required autofocus autocomplete="on">
+                <input type="email" name="email" class="login-field-control" placeholder="Email..." required autocomplete="on">
+                <input type="password" name="password" class="login-field-control" placeholder="Password..." required autocomplete="off">
+                <input type="password" name="confirm_password" class="login-field-control" placeholder="Confirm password..." required autocomplete="off">
+                <input type="submit" value="Signup" class="field-button btn-primary m-top-10">
+            </div>
+    </form>
+    
+</div>
+</div>
+
+{% endblock main %}

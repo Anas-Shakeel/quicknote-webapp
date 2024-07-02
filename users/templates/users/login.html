@@ -1,0 +1,37 @@
+{% extends "notes/layout.html" %}
+
+{% block title %}
+Login
+{% endblock title %}
+
+{% block main %}
+
+<!-- Login Form -->
+<div class="container-primary login-box">
+    <!-- Messagebox -->
+    <div class="msg-container">
+        {% if message %}
+            <p class="msg msg-error">{{message}}</p>
+        {% endif %}
+    </div>
+    <!-- Login form -->
+    <div class="login-box-container">
+        <!-- Form Heading -->
+        <h1 class="login-heading">Login</h1>
+        
+        <!-- Form Fields -->  
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="login-input-field-container">
+                <input type="text" name="username" class="login-field-control" placeholder="Username..." required autofocus autocomplete="off">
+                <input type="password" name="password" class="login-field-control" placeholder="Password..." required autocomplete="off">
+                <input type="submit" value="Login" class="field-button btn-primary m-top-10">
+                {% comment %} <a href="{% url 'login' %}" class="link login-link-fp">Forgot password?</a> {% endcomment %}
+                <a href="{% url 'signup' %}" class="link login-link-fp">Don't have an account?</a>
+            </div>
+    </form>
+    
+</div>
+</div>
+
+{% endblock main %}

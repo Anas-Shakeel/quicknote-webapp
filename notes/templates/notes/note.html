@@ -1,0 +1,168 @@
+{% extends "notes/layout.html" %} {% load static %}
+
+<!-- Title of the page -->
+{% block title %} {{user_note.title}} {% endblock title %}
+
+<!-- Main content -->
+{% block main %}
+
+<!-- Messagebox -->
+{% if message %}
+<div class="msg-container-account">
+    {% if status == "success" %}
+    <p class="msg msg-success">{{message}}</p>
+    {% else %}
+    <p class="msg msg-error">{{message}}</p>
+    {% endif %}
+</div>
+{% endif %}
+
+<!-- Content -->
+<form action="{% url 'note' user_note.pk %}" method="post" class="container-primary">
+    {% csrf_token %}
+
+    <!-- Titlebar -->
+    <div class="titlebar-primary no-pad-x no-pad-y" style="background-color: #{{user_note.color.code}}; background: -webkit-linear-gradient(left, #{{user_note.color.code}}, #{{user_note.color.code}}75);">
+        <input
+            type="text"
+            name="title"
+            class="field-control no-borders pad-x-20 custom-select"
+            id="title"
+            placeholder="Write Title..."
+            autocomplete="off"
+            maxlength="100"
+            value="{{user_note.title}}"
+            disabled />
+        <!-- Buttons -->
+        <div class="note-btn-container pad-right-20" id="buttonContainer">
+            <button class="titlebar-btn f-color-def" id="edit" type="button">Edit</button>
+
+            <div class="color-selector-container">
+                <label for="color" class="color-selector-label" hidden>Color</label>
+                <select name="color" class="color-selector" disabled hidden>
+                    {% for color in colors %} {% if color.code == user_note.color.code %}
+                    <option value="{{ color.code }}" class="color-selector-option" selected>
+                        {{color.name|title}}
+                    </option>
+                    {% else %}
+                    <option value="{{ color.code }}" class="color-selector-option">{{color.name.title}}</option>
+                    {% endif %} {% endfor %}
+                </select>
+            </div>
+            <input type="submit" value="Save" id="save" class="titlebar-btn d-color-def" hidden disabled />
+            <button class="titlebar-btn f-color-def" id="cancel" type="button" hidden disabled>Cancel</button>
+            <a href="{% url 'download' user_note.pk %}" class="titlebar-btn f-color-def" id="download">Download</a>
+            <a href="{% url 'delete' user_note.pk %}" class="titlebar-btn f-color-def danger-hover" id="delete">Delete</a>
+        </div>
+    </div>
+
+    <!-- Description -->
+    <div class="titlebar-primary no-pad-x">
+        <input
+            type="text"
+            name="desc"
+            class="field-control no-borders f-20 pad-x-20 custom-select"
+            id="description"
+            placeholder="Write Description... (Optional)"
+            autocomplete="off"
+            maxlength="100"
+            value="{{user_note.description}}"
+            disabled />
+    </div>
+
+    <!-- Contentbox -->
+    <div class="content-box-primary no-pad-x custom-scrollbar">
+        <textarea
+            name="content"
+            placeholder="Write Content..."
+            class="content-textarea pad-x-20 custom-select custom-scrollbar"
+            id="content"
+            disabled>{{user_note.content}}</textarea>
+    </div>
+</form>
+
+<!-- Javascript Code -->
+<script>
+    const btn_container = document.querySelector("#buttonContainer");
+
+    // Get the buttons
+    const edit_btn = document.querySelector("#edit");
+    const cancel_btn = document.querySelector("#cancel");
+    const save_btn = document.querySelector("#save");
+    const color_selector_label = document.querySelector(".color-selector-label");
+    const color_selector = document.querySelector(".color-selector");
+
+    // Get the fields
+    const title_field = document.querySelector("#title");
+    const desc_field = document.querySelector("#description");
+    const content_field = document.querySelector("#content");
+
+    // Get the data from fields
+    let title = "";
+    let desc = "";
+    let content = "";
+
+    // Get the edit btn
+    edit_btn.addEventListener("click", () => {
+        // Enable the cancel btn
+        cancel_btn.removeAttribute("hidden");
+        cancel_btn.removeAttribute("disabled");
+
+        // Enable save btn
+        save_btn.removeAttribute("hidden");
+        save_btn.removeAttribute("disabled");
+
+        // enable the color selector
+        color_selector.removeAttribute("hidden");
+        color_selector.removeAttribute("disabled");
+        color_selector_label.removeAttribute("hidden");
+
+        // Enable the Fields
+        title_field.removeAttribute("disabled");
+        desc_field.removeAttribute("disabled");
+        content_field.removeAttribute("disabled");
+
+        // Get the values of fields
+        title = title_field.value;
+        desc = desc_field.value;
+        content = content_field.value;
+
+        // Disable and hide the edit btn
+        edit_btn.setAttribute("disabled", "true");
+        edit_btn.setAttribute("hidden", "true");
+
+    });
+
+    cancel_btn.addEventListener("click", () => {
+        // Undo everything done in edit event
+        // Set the field values back to default
+        title_field.value = title
+        desc_field.value = desc
+        content_field.value = content
+
+
+        // Enable the Edit btn
+        edit_btn.removeAttribute("hidden");
+        edit_btn.removeAttribute("disabled");
+
+        // Disable save btn
+        save_btn.setAttribute("hidden", "true");
+        save_btn.setAttribute("disabled", "true");
+
+        // enable the color selector
+        color_selector.setAttribute("hidden", "true");
+        color_selector.setAttribute("disabled", "true");
+        color_selector_label.setAttribute("hidden", "true");
+
+        // Disable the Fields
+        title_field.setAttribute("disabled", "true");
+        desc_field.setAttribute("disabled", "true");
+        content_field.setAttribute("disabled", "true");
+
+        // disable and hide the edit btn
+        cancel_btn.setAttribute("disabled", "true");
+        cancel_btn.setAttribute("hidden", "true");
+    });
+</script>
+
+{% endblock main %}

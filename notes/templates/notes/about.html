@@ -1,0 +1,36 @@
+{% extends "notes/layout.html" %}
+
+
+{% block title %}
+About
+{% endblock title %}
+
+{% block main %}
+
+<div class="container-primary">
+    <!-- About -->
+    <div class="titlebar-primary">
+        <p class="titlebar-title">About</p>
+    </div>
+    <div class="content-box-primary custom-scrollbar">
+        <div class="container">
+            <h1 class="app-name">Quicknote</h1>
+            <div class="about-content">
+                <p class="content-text">
+                    An easy-to-use and user-friendly app to write notes and store them in the cloud somewhere.
+                </p>
+                <div>
+                    <p class="content-text">This app was made as a final project for <a href="https://cs50.harvard.edu/x/2024/" target="_blank" class="link">cs50x</a>.</p>
+                    <p class="content-text">It was designed and developed by me (a one man team).</p>
+                </div>
+                <p class="content-text">Made with 🧡, by Anas Shakeel.</p>
+            </div>
+            
+
+            <!-- Dev's github -->
+            <a href="https://github.com/Anas-Shakeel/" target="_blank" class="btn btn-primary">Developer's Github</a>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}
